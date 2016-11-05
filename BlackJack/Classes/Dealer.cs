@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BlackJack.Classes
 {
-    class Dealer
+    class Dealer : Player
     {
-        public List<Card> Hand { get; set; }
+        //public List<Card> Hand { get; set; }
         
         public Card DealCard(Deck deck)
         {
