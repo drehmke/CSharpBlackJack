@@ -10,6 +10,7 @@ namespace BlackJack.Classes
     {
         public List<Card> Hand { get; set; }
         public int handTotal = 0;
+        public bool turn = false;
 
         public void HandTotal()
         {

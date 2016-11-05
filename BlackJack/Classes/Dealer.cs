@@ -8,12 +8,31 @@ namespace BlackJack.Classes
 {
     class Dealer : Player
     {
-        //public List<Card> Hand { get; set; }
         
         public Card DealCard(Deck deck)
         {
             return deck.GetRandomCard();
         }
+
+        public void PlayTurn(Deck deck)
+        {
+            Console.WriteLine("Checking the dealer's hand ...");
+            while (this.handTotal <= 16 )
+            {
+                Console.WriteLine("Dealer is taking another card ...");
+                Card dealerCard = this.DealCard(deck);
+                Console.WriteLine("Dealer received {0} of {1}", dealerCard.Rank, dealerCard.Suit);
+                this.Hand.Add(dealerCard);
+                this.HandTotal();
+                Console.WriteLine("Dealer's hand is now {0}", this.handTotal);
+            }
+            if( this.handTotal >= 17 )
+            {
+                this.turn = false;
+                Console.WriteLine("Dealer is staying.");
+            }
+        }
+
         public Dealer()
         {
             this.Hand = new List<Card>();

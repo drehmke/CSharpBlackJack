@@ -26,7 +26,8 @@ namespace BlackJack
                 player.Hand.Add(playerCard);
                 dealer.Hand.Add(dealerCard);
             }
-
+            
+            // Set up the board
             Console.WriteLine("---- Player ----");
             foreach (Card card in player.Hand)
             {
@@ -41,27 +42,64 @@ namespace BlackJack
             }
             dealer.HandTotal();
             Console.WriteLine("Hand total is currently: {0}", dealer.handTotal);
-            while(dealer.handTotal < 16)
-            {
-                Console.WriteLine("Dealer is taking another card ...");
-                Card dealerCard = dealer.DealCard(deck);
-                Console.WriteLine("Dealer received {0} of {1}", dealerCard.Rank, dealerCard.Suit);
-                dealer.Hand.Add(dealerCard);
-                dealer.HandTotal();
-                Console.WriteLine("Dealer's hand is now {0}", dealer.handTotal);
-            }
-            //Card cardFromDeck = dealer.DealCard(deck);
 
-
-            // Check that the random card method works
             Console.WriteLine("----------------------");
-            /*
-            foreach( Card card in deck.Cards)
+
+            // Time to play -- player first
+            
+            if( player.handTotal > 21 )
             {
-                Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
+                Console.WriteLine("You are now bust.");
+                player.turn = false;
+                dealer.turn = true;
+            } else if( player.handTotal == 21 )
+            {
+                Console.WriteLine("You have 21!");
+            } else 
+            {
+                player.turn = true;
             }
-            */
-            Console.WriteLine("There are {0} cards left in the deck.", deck.Cards.Count);
+            
+            //Console.WriteLine("Player's turn status: {0}", player.turn);
+            while ( player.turn == true )
+            {
+                Console.WriteLine("What would you like to do?");
+                string playerMove = Console.ReadLine();
+                playerMove.Trim().ToLower();
+                Console.WriteLine("You chose to {0} ... ", playerMove.Trim().ToLower());
+                switch(playerMove)
+                {
+                    case "hit":
+                        Card newCard = dealer.DealCard(deck);
+                        player.Hand.Add(newCard);
+                        Console.WriteLine("You received a {0} of {1}.", newCard.Rank, newCard.Suit);
+                        player.HandTotal();
+                        Console.WriteLine("Your new total is {0}", player.handTotal);
+                        break;
+                    case "stay":
+                        Console.WriteLine("You chose {0}. Your turn is complete. The dealer will now go.", playerMove);
+                        player.turn = false;
+                        dealer.turn = true;
+                        
+                        break;
+                    default:
+                        Console.WriteLine("I don't recognize that request. Please select either 'hit' or 'stay'.");
+                        break;
+                }
+            }
+
+            // now the dealer
+            switch(dealer.turn)
+            {
+                case true:
+                    dealer.PlayTurn(deck);
+                    break;
+                case false:
+                    break;
+            }
+            
+            //Console.WriteLine("There are {0} cards left in the deck.", deck.Cards.Count);
+
             Console.ReadLine();
             
         }
