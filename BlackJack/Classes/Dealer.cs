@@ -29,13 +29,22 @@ namespace BlackJack.Classes
             if( this.handTotal >= 17 )
             {
                 this.turn = false;
-                Console.WriteLine("Dealer is staying.");
+                if( this.handTotal > 21 )
+                {
+                    Console.WriteLine("Dealer is bust.");
+                }
+                else if( this.handTotal == 21 )
+                { Console.WriteLine("Dealer has blackjack.");  }
+                else
+                { Console.WriteLine("Dealer is staying."); }
+                
             }
         }
 
         public Dealer()
         {
             this.Hand = new List<Card>();
+            this.color = "cyan";
         }
     }
 }

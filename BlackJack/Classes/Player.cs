@@ -11,6 +11,8 @@ namespace BlackJack.Classes
         public List<Card> Hand { get; set; }
         public int handTotal = 0;
         public bool turn = false;
+        public bool win = false;
+        public string color;
 
         public void HandTotal()
         {
@@ -25,6 +27,7 @@ namespace BlackJack.Classes
         public Player()
         {
             this.Hand = new List<Card>();
+            this.color = "yellow";
         }
     }
 }

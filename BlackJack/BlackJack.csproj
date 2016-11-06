@@ -47,6 +47,7 @@
     <Compile Include="Classes\Dealer.cs" />
     <Compile Include="Classes\Deck.cs" />
     <Compile Include="Classes\Player.cs" />
+    <Compile Include="Classes\Utility.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

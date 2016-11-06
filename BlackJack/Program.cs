@@ -11,11 +11,15 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
+            Utility myUtils = new Utility();
+            
             // Instance of Deck
             Deck deck = new Deck();
             // Instantiate the two participants
             Dealer dealer = new Dealer();
             Player player = new Player();
+
+            bool turnsDone = false;
 
 
             // Deal cards to players
@@ -28,28 +32,31 @@ namespace BlackJack
             }
             
             // Set up the board
-            Console.WriteLine("---- Player ----");
+            myUtils.ColorPrint("---- Player ----", player.color);
             foreach (Card card in player.Hand)
             {
                 Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
             }
             player.HandTotal();
-            Console.WriteLine("Hand total is currently: {0}", player.handTotal);
-            Console.WriteLine("---- Dealer ----");
+            myUtils.ColorPrint(String.Format("Hand total is currently: {0}", player.handTotal), player.color);
+
+            myUtils.ColorPrint("---- Dealer ----", dealer.color);
             foreach (Card card in dealer.Hand)
             {
                 Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
             }
             dealer.HandTotal();
-            Console.WriteLine("Hand total is currently: {0}", dealer.handTotal);
+            myUtils.ColorPrint(String.Format("Hand total is currently: {0}", dealer.handTotal), dealer.color);
 
             Console.WriteLine("----------------------");
+            Console.WriteLine("--- Player's  Turn ---");
+            Console.WriteLine("----------------------");
+            Console.WriteLine("Player, your total is currently: {0}", player.handTotal);
 
             // Time to play -- player first
-            
-            if( player.handTotal > 21 )
+            if ( player.handTotal > 21 )
             {
-                Console.WriteLine("You are now bust.");
+                myUtils.ColorPrint("You are bust", "red");
                 player.turn = false;
                 dealer.turn = true;
             } else if( player.handTotal == 21 )
@@ -66,18 +73,20 @@ namespace BlackJack
                 Console.WriteLine("What would you like to do?");
                 string playerMove = Console.ReadLine();
                 playerMove.Trim().ToLower();
-                Console.WriteLine("You chose to {0} ... ", playerMove.Trim().ToLower());
+                string tmp = String.Format("You chose to {0} ... ", myUtils.SimpleCleanInput(playerMove));
+                //Console.WriteLine(sb);
                 switch(playerMove)
                 {
                     case "hit":
                         Card newCard = dealer.DealCard(deck);
                         player.Hand.Add(newCard);
-                        Console.WriteLine("You received a {0} of {1}.", newCard.Rank, newCard.Suit);
                         player.HandTotal();
-                        Console.WriteLine("Your new total is {0}", player.handTotal);
+                        tmp += String.Format("You received a {0} of {1}. Your new total is {2}.", newCard.Rank, newCard.Suit, player.handTotal);
+                        myUtils.ColorPrint(tmp, player.color);
                         break;
                     case "stay":
-                        Console.WriteLine("You chose {0}. Your turn is complete. The dealer will now go.", playerMove);
+                        tmp += " Your turn is now complete. It is now the dealer's turn.";
+                        Console.WriteLine(tmp);
                         player.turn = false;
                         dealer.turn = true;
                         
@@ -95,10 +104,10 @@ namespace BlackJack
                     dealer.PlayTurn(deck);
                     break;
                 case false:
+                    turnsDone = true;
                     break;
             }
             
-            //Console.WriteLine("There are {0} cards left in the deck.", deck.Cards.Count);
 
             Console.ReadLine();
             
