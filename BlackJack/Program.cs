@@ -56,13 +56,18 @@ namespace BlackJack
             myUtils.ColorPrint(String.Format("{0} {1}", txtHandTotal, player.handTotal), player.color);
 
             myUtils.ColorPrint(txtDealerBorder, dealer.color);
+            // I only want to show one card...
+            Console.WriteLine("{0} of {1}", dealer.Hand[1].Rank, dealer.Hand[1].Suit);
+            dealer.HandTotal();
+            /*
             foreach (Card card in dealer.Hand)
             {
                 Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
             }
-            dealer.HandTotal();
+           
+            
             myUtils.ColorPrint(String.Format("{0} {1}", txtHandTotal, dealer.handTotal), dealer.color);
-
+            */
 
             // Time to play -- player first
             if ( myUtils.checkBlackJack(player.Hand) )

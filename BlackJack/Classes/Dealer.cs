@@ -26,7 +26,7 @@ namespace BlackJack.Classes
                 Console.WriteLine("Dealer received {0} of {1}", dealerCard.Rank, dealerCard.Suit);
                 this.Hand.Add(dealerCard);
                 this.HandTotal();
-                myUtils.ColorPrint(String.Format("Dealer's hand is now {0}", this.handTotal), this.color);
+                //myUtils.ColorPrint(String.Format("Dealer's hand is now {0}", this.handTotal), this.color);
             }
             if( this.handTotal >= 17 )
             {
