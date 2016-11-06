@@ -13,7 +13,18 @@ namespace BlackJack
         {
 
             // Text strings ...
-
+            string txtPlayerBorder = "---- Player ----";
+            string txtDealerBorder = "---- Dealer ----";
+            string txtHandTotal = "Hand total is currently:";
+            string txtEndGame = "\nPress ENTER to end this game.";
+            string txtPlayerCurrTotal = "Player, your total is currently: ";
+            string txtPlayerTotal = "Player total is : ";
+            string txtDealerTotal = "Dealer total is : ";
+            string txtPlayerBlackJack = "Congratulations! You have a Blackjack!" + txtEndGame;
+            string txtDealerBlackJack = "I'm sorry, the house wins with a Blackjack." + txtEndGame;
+            string txtDealerWins = "-- I am sorry. The house wins this round --" + txtEndGame;
+            string txtPlayerWins = "-- Congratulations! You won! --" + txtEndGame;
+            string txtDraw = "-- The game was a draw. --" + txtEndGame;
             // End text strings ...
 
             Utility myUtils = new Utility();
@@ -36,27 +47,27 @@ namespace BlackJack
             }
             
             // Set up the board
-            myUtils.ColorPrint("---- Player ----", player.color);
+            myUtils.ColorPrint(txtPlayerBorder, player.color);
             foreach (Card card in player.Hand)
             {
                 Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
             }
             player.HandTotal();
-            myUtils.ColorPrint(String.Format("Hand total is currently: {0}", player.handTotal), player.color);
+            myUtils.ColorPrint(String.Format("{0} {1}", txtHandTotal, player.handTotal), player.color);
 
-            myUtils.ColorPrint("---- Dealer ----", dealer.color);
+            myUtils.ColorPrint(txtDealerBorder, dealer.color);
             foreach (Card card in dealer.Hand)
             {
                 Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
             }
             dealer.HandTotal();
-            myUtils.ColorPrint(String.Format("Hand total is currently: {0}", dealer.handTotal), dealer.color);
+            myUtils.ColorPrint(String.Format("{0} {1}", txtHandTotal, dealer.handTotal), dealer.color);
 
 
             // Time to play -- player first
             if ( myUtils.checkBlackJack(player.Hand) )
             {
-                myUtils.ColorPrint("Congratulations! You have a Blackjack!", player.color);
+                myUtils.ColorPrint(txtPlayerBlackJack, player.color);
                 dealer.win = true;
                 gameOver = true;
             } else
@@ -65,7 +76,7 @@ namespace BlackJack
             }
             if( myUtils.checkBlackJack(dealer.Hand) )
             {
-                myUtils.ColorPrint("I'm sorry, the house wins with a Blackjack.", dealer.color);
+                myUtils.ColorPrint(txtDealerBlackJack, dealer.color);
                 gameOver = true;
             } else { player.turn = true; }
 
@@ -74,14 +85,14 @@ namespace BlackJack
                 Console.WriteLine("----------------------");
                 Console.WriteLine("--- Player's  Turn ---");
                 Console.WriteLine("----------------------");
-                Console.WriteLine("Player, your total is currently: {0}", player.handTotal);
+                Console.WriteLine("{0}{1}", txtPlayerCurrTotal, player.handTotal);
             }
             //Console.WriteLine("Player's turn status: {0}", player.turn);
             while (!gameOver && player.turn == true )
             {
                 if ( player.handTotal < 21 )
                 {
-                    Console.WriteLine("What would you like to do?");
+                    Console.WriteLine("What would you like to do?\n(Type \"hit\" or \"h\" to hit, \"stay\" or \"s\" to stay.)");
                     string playerMove = Console.ReadLine();
                     playerMove.Trim().ToLower();
 
@@ -106,7 +117,6 @@ namespace BlackJack
                     }
                 } else if (player.handTotal == 21 )
                 {
-                    myUtils.ColorPrint("You have 21!", player.color);
                     player.turn = false;
                     player.win = true;
                     
@@ -115,6 +125,7 @@ namespace BlackJack
                     myUtils.ColorPrint("You have bust.", "red");
                     dealer.win = true;
                     gameOver = true;
+                    Console.WriteLine(txtEndGame);
                 }
             }
 
@@ -124,35 +135,35 @@ namespace BlackJack
                 dealer.PlayTurn(deck);
             }
             // real quick check if the dealer didn't win
-            if( !dealer.win)
+            if( !dealer.win && !gameOver)
             {
                 if( dealer.handTotal > 21 ) { player.win = true;  }
             }
             
-            if (player.win == true)
+            if (player.win == true && !gameOver)
             {
-                myUtils.ColorPrint("-- Congratulations! You won! --", player.color);
+                myUtils.ColorPrint(txtPlayerWins, player.color);
                 gameOver = true;
             }
-            else if (dealer.win == true)
+            else if (dealer.win == true && !gameOver )
             {
-                myUtils.ColorPrint("-- I am sorry. The house wins this round --.", dealer.color);
-            } else
+                myUtils.ColorPrint(txtDealerWins, dealer.color);
+            } else if( !gameOver )
             {
                 // no obvious winner, we need to evaluate ...
                 if( player.handTotal > dealer.handTotal)
                 {
 
-                    Console.WriteLine("Player total is : {0} -- Dealer total is : {1}: ", player.handTotal, dealer.handTotal);
-                    myUtils.ColorPrint("Congratulations! You won!", player.color);
+                    Console.WriteLine("{0}{1} - {2}{3}", txtPlayerTotal, player.handTotal, txtDealerTotal, dealer.handTotal);
+                    myUtils.ColorPrint(txtPlayerWins, player.color);
                 } else if( player.handTotal < dealer.handTotal )
                 {
 
-                    Console.WriteLine("Player total is : {0} -- Dealer total is : {1}: ", player.handTotal, dealer.handTotal);
-                    myUtils.ColorPrint("-- I am sorry. The house wins this round. --", dealer.color);
+                    Console.WriteLine("{0}{1} -- {2}{3}", txtPlayerTotal, player.handTotal, txtDealerTotal, dealer.handTotal);
+                    myUtils.ColorPrint(txtDealerWins, dealer.color);
                 } else
                 {
-                    Console.WriteLine("-- The game was a draw. --");
+                    Console.WriteLine(txtDraw);
                 }
             }
             Console.ReadLine();

@@ -23,7 +23,6 @@ namespace BlackJack.Classes
             Console.WriteLine("Checking the dealer's hand ...");
             while (this.handTotal <= 16 )
             {
-                Console.WriteLine("Dealer is taking another card ...");
                 Card dealerCard = this.DealCard(deck);
                 Console.WriteLine("Dealer received {0} of {1}", dealerCard.Rank, dealerCard.Suit);
                 this.Hand.Add(dealerCard);
