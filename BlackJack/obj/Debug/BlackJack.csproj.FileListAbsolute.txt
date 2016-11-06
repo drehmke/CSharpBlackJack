@@ -4,3 +4,9 @@ C:\programming\FullStackDotNet\WeekThree\BlackJack\BlackJack\bin\Debug\BlackJack
 C:\programming\FullStackDotNet\WeekThree\BlackJack\BlackJack\obj\Debug\BlackJack.csprojResolveAssemblyReference.cache
 C:\programming\FullStackDotNet\WeekThree\BlackJack\BlackJack\obj\Debug\BlackJack.exe
 C:\programming\FullStackDotNet\WeekThree\BlackJack\BlackJack\obj\Debug\BlackJack.pdb
+D:\programming\FullStackDotNet\WeekThree\BlackJack\bin\Debug\BlackJack.exe.config
+D:\programming\FullStackDotNet\WeekThree\BlackJack\bin\Debug\BlackJack.exe
+D:\programming\FullStackDotNet\WeekThree\BlackJack\bin\Debug\BlackJack.pdb
+D:\programming\FullStackDotNet\WeekThree\BlackJack\obj\Debug\BlackJack.csprojResolveAssemblyReference.cache
+D:\programming\FullStackDotNet\WeekThree\BlackJack\obj\Debug\BlackJack.exe
+D:\programming\FullStackDotNet\WeekThree\BlackJack\obj\Debug\BlackJack.pdb

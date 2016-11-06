@@ -145,11 +145,21 @@ namespace BlackJack
             {
                 dealer.PlayTurn(deck);
             }
+
             // real quick check if the dealer didn't win
-            if( !dealer.win && !gameOver)
+            if ( !dealer.win && !gameOver )
             {
-                if( dealer.handTotal > 21 ) { player.win = true;  }
+                if ( dealer.handTotal > 21 ) { player.win = true; }
             }
+            // show the dealer's hand
+            foreach ( Card card in dealer.Hand )
+            {
+                Console.WriteLine("{0} of {1}", card.Rank, card.Suit);
+            }
+
+
+            myUtils.ColorPrint(String.Format("{0} {1}", txtHandTotal, dealer.handTotal), dealer.color);
+
             
             if (player.win == true && !gameOver)
             {
