@@ -98,9 +98,15 @@ namespace BlackJack
 
                     switch (playerMove)
                     {
+
                         case "h":
                         case "hit":
                             Card newCard = dealer.DealCard(deck);
+                            if( newCard.Rank == "Ace")
+                            {
+                                Console.WriteLine("You have received an Ace. Would you like it to be worth 1 or 11 ?");
+                                newCard.Value = Convert.ToInt32(Console.ReadLine());
+                            }
                             player.Hand.Add(newCard);
                             player.HandTotal();
                             myUtils.ColorPrint(String.Format("You chose to hit. You received a {0} of {1}. Your new total is {2}.", newCard.Rank, newCard.Suit, player.handTotal), player.color);
