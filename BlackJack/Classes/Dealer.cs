@@ -8,6 +8,7 @@ namespace BlackJack.Classes
 {
     class Dealer : Player
     {
+        Utility myUtils = new Utility();
         
         public Card DealCard(Deck deck)
         {
@@ -16,6 +17,9 @@ namespace BlackJack.Classes
 
         public void PlayTurn(Deck deck)
         {
+            Console.WriteLine("----------------------");
+            Console.WriteLine("--- Dealer's  Turn ---");
+            Console.WriteLine("----------------------");
             Console.WriteLine("Checking the dealer's hand ...");
             while (this.handTotal <= 16 )
             {
@@ -24,17 +28,20 @@ namespace BlackJack.Classes
                 Console.WriteLine("Dealer received {0} of {1}", dealerCard.Rank, dealerCard.Suit);
                 this.Hand.Add(dealerCard);
                 this.HandTotal();
-                Console.WriteLine("Dealer's hand is now {0}", this.handTotal);
+                myUtils.ColorPrint(String.Format("Dealer's hand is now {0}", this.handTotal), this.color);
             }
             if( this.handTotal >= 17 )
             {
                 this.turn = false;
                 if( this.handTotal > 21 )
                 {
-                    Console.WriteLine("Dealer is bust.");
+                    myUtils.ColorPrint("Dealer is bust!", "red");
                 }
                 else if( this.handTotal == 21 )
-                { Console.WriteLine("Dealer has blackjack.");  }
+                {
+                    myUtils.ColorPrint("Dealer has 21!", this.color);
+                    this.win = true;
+                }
                 else
                 { Console.WriteLine("Dealer is staying."); }
                 

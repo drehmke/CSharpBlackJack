@@ -11,16 +11,20 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
+
+            // Text strings ...
+
+            // End text strings ...
+
             Utility myUtils = new Utility();
-            
+                
             // Instance of Deck
             Deck deck = new Deck();
             // Instantiate the two participants
             Dealer dealer = new Dealer();
             Player player = new Player();
 
-            bool turnsDone = false;
-
+            bool gameOver = false;
 
             // Deal cards to players
             for (int i = 0; i < 2; i++)
@@ -48,67 +52,109 @@ namespace BlackJack
             dealer.HandTotal();
             myUtils.ColorPrint(String.Format("Hand total is currently: {0}", dealer.handTotal), dealer.color);
 
-            Console.WriteLine("----------------------");
-            Console.WriteLine("--- Player's  Turn ---");
-            Console.WriteLine("----------------------");
-            Console.WriteLine("Player, your total is currently: {0}", player.handTotal);
 
             // Time to play -- player first
-            if ( player.handTotal > 21 )
+            if ( myUtils.checkBlackJack(player.Hand) )
             {
-                myUtils.ColorPrint("You are bust", "red");
-                player.turn = false;
-                dealer.turn = true;
-            } else if( player.handTotal == 21 )
-            {
-                Console.WriteLine("You have 21!");
-            } else 
+                myUtils.ColorPrint("Congratulations! You have a Blackjack!", player.color);
+                dealer.win = true;
+                gameOver = true;
+            } else
             {
                 player.turn = true;
             }
-            
-            //Console.WriteLine("Player's turn status: {0}", player.turn);
-            while ( player.turn == true )
+            if( myUtils.checkBlackJack(dealer.Hand) )
             {
-                Console.WriteLine("What would you like to do?");
-                string playerMove = Console.ReadLine();
-                playerMove.Trim().ToLower();
-                string tmp = String.Format("You chose to {0} ... ", myUtils.SimpleCleanInput(playerMove));
-                //Console.WriteLine(sb);
-                switch(playerMove)
+                myUtils.ColorPrint("I'm sorry, the house wins with a Blackjack.", dealer.color);
+                gameOver = true;
+            } else { player.turn = true; }
+
+            if(!gameOver && player.turn == true)
+            {
+                Console.WriteLine("----------------------");
+                Console.WriteLine("--- Player's  Turn ---");
+                Console.WriteLine("----------------------");
+                Console.WriteLine("Player, your total is currently: {0}", player.handTotal);
+            }
+            //Console.WriteLine("Player's turn status: {0}", player.turn);
+            while (!gameOver && player.turn == true )
+            {
+                if ( player.handTotal < 21 )
                 {
-                    case "hit":
-                        Card newCard = dealer.DealCard(deck);
-                        player.Hand.Add(newCard);
-                        player.HandTotal();
-                        tmp += String.Format("You received a {0} of {1}. Your new total is {2}.", newCard.Rank, newCard.Suit, player.handTotal);
-                        myUtils.ColorPrint(tmp, player.color);
-                        break;
-                    case "stay":
-                        tmp += " Your turn is now complete. It is now the dealer's turn.";
-                        Console.WriteLine(tmp);
-                        player.turn = false;
-                        dealer.turn = true;
-                        
-                        break;
-                    default:
-                        Console.WriteLine("I don't recognize that request. Please select either 'hit' or 'stay'.");
-                        break;
+                    Console.WriteLine("What would you like to do?");
+                    string playerMove = Console.ReadLine();
+                    playerMove.Trim().ToLower();
+
+                    switch (playerMove)
+                    {
+                        case "h":
+                        case "hit":
+                            Card newCard = dealer.DealCard(deck);
+                            player.Hand.Add(newCard);
+                            player.HandTotal();
+                            myUtils.ColorPrint(String.Format("You chose to hit. You received a {0} of {1}. Your new total is {2}.", newCard.Rank, newCard.Suit, player.handTotal), player.color);
+                            break;
+                        case "s":
+                        case "stay":
+                            Console.WriteLine("You chose to stay. Your turn is now complete. It is now the dealer's turn.");
+                            player.turn = false;
+                            dealer.turn = true;
+                            break;
+                        default:
+                            Console.WriteLine("I don't recognize that request. Please select either 'hit' or 'stay'.");
+                            break;
+                    }
+                } else if (player.handTotal == 21 )
+                {
+                    myUtils.ColorPrint("You have 21!", player.color);
+                    player.turn = false;
+                    player.win = true;
+                    
+                } else
+                {
+                    myUtils.ColorPrint("You have bust.", "red");
+                    dealer.win = true;
+                    gameOver = true;
                 }
             }
 
             // now the dealer
-            switch(dealer.turn)
+            if( dealer.turn == true && !gameOver )
             {
-                case true:
-                    dealer.PlayTurn(deck);
-                    break;
-                case false:
-                    turnsDone = true;
-                    break;
+                dealer.PlayTurn(deck);
+            }
+            // real quick check if the dealer didn't win
+            if( !dealer.win)
+            {
+                if( dealer.handTotal > 21 ) { player.win = true;  }
             }
             
+            if (player.win == true)
+            {
+                myUtils.ColorPrint("-- Congratulations! You won! --", player.color);
+                gameOver = true;
+            }
+            else if (dealer.win == true)
+            {
+                myUtils.ColorPrint("-- I am sorry. The house wins this round --.", dealer.color);
+            } else
+            {
+                // no obvious winner, we need to evaluate ...
+                if( player.handTotal > dealer.handTotal)
+                {
 
+                    Console.WriteLine("Player total is : {0} -- Dealer total is : {1}: ", player.handTotal, dealer.handTotal);
+                    myUtils.ColorPrint("Congratulations! You won!", player.color);
+                } else if( player.handTotal < dealer.handTotal )
+                {
+
+                    Console.WriteLine("Player total is : {0} -- Dealer total is : {1}: ", player.handTotal, dealer.handTotal);
+                    myUtils.ColorPrint("-- I am sorry. The house wins this round. --", dealer.color);
+                } else
+                {
+                    Console.WriteLine("-- The game was a draw. --");
+                }
+            }
             Console.ReadLine();
             
         }

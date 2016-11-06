@@ -17,8 +17,8 @@ namespace BlackJack.Classes
         {
             switch(color)
             {
-                case "yellow":
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                case "darkyellow":
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     break;
                 case "cyan":
                     Console.ForegroundColor = ConsoleColor.Cyan;

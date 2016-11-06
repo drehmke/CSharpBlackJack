@@ -27,7 +27,7 @@ namespace BlackJack.Classes
         public Player()
         {
             this.Hand = new List<Card>();
-            this.color = "yellow";
+            this.color = "darkyellow";
         }
     }
 }
